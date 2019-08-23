@@ -1,5 +1,6 @@
-import { Component, Host, h, Prop, State } from '@stencil/core';
-import { createCompiler, Compiler, CompilerConfig } from '../../compiler';
+import { Component, Host, h, Prop, State, Listen } from '@stencil/core';
+import * as d from '../../../../../dist/declarations';
+import { experimentalCreateCompiler } from '@stencil/core/compiler';
 
 
 @Component({
@@ -10,31 +11,69 @@ import { createCompiler, Compiler, CompilerConfig } from '../../compiler';
 export class StencilRepl {
 
   @Prop() appName: string = 'Stencil App';
-  @Prop() inputs: InputData[] = [];
+  @Prop() inputs: InputFile[] = [];
 
   @State() output: OutputData;
 
-  compiler: Compiler;
+  watcher: d.CompilerWatcher;
 
-  async componentWillLoad() {
-    const config: CompilerConfig = {
+  async componentDidLoad() {
+    const browserSystem: d.CompilerSystem = {
 
+    } as any;
+
+    const browserLogger: d.Logger = {
+
+    } as any;
+
+    const config: d.Config = {
+      sys: browserSystem as any,
+      logger: browserLogger
     };
 
-    this.compiler = await createCompiler(config);
+    const compiler = await experimentalCreateCompiler(config);
 
-    await Promise.all(this.inputs.map(async input => {
-      await this.compiler.sys.writeFile(input.name, input.code);
-    }));
+    this.inputs.forEach(input => {
+      compiler.sys.writeFile(input.name, input.code);
+    });
+
+    this.watcher = await compiler.watch();
+
+    this.watcher.onFinish(results => {
+      console.log('build finished', results.buildId);
+
+      const outputTarget = results.outputTargets.find(o => o.type === 'custom-element');
+      if (outputTarget) {
+        this.output = {
+          files: outputTarget.files.map(fileName => {
+            const code = compiler.sys.readFile(fileName);
+            const outputFile: OutputFile = {
+              name: fileName,
+              code
+            };
+            return outputFile;
+          })
+        };
+      }
+    });
   }
 
-  async compile() {
-    const results = await this.compiler.build();
-    console.log('results', results);
+  @Listen('fileAdd')
+  async fileAdd(ev: any) {
+    console.log('fileAdd', ev.detail);
+    this.watcher.fileAdd(ev.detail.fileName);
   }
 
-  componentDidLoad() {
-    this.compile();
+  @Listen('fileChange')
+  async fileChange(ev: any) {
+    console.log('fileChange', ev.detail);
+    this.watcher.fileChange(ev.detail.fileName);
+  }
+
+  @Listen('fileRemove')
+  async fileRemove(ev: any) {
+    console.log('fileRemove', ev.detail);
+    this.watcher.fileRemove(ev.detail.fileName);
   }
 
   render() {
@@ -50,11 +89,16 @@ export class StencilRepl {
   }
 }
 
-export interface InputData {
+export interface InputFile {
   name: string;
   code: string;
 }
 
 export interface OutputData {
+  files: OutputFile[];
+}
 
+export interface OutputFile {
+  name: string;
+  code: string;
 }

@@ -7,11 +7,11 @@
 
 import { HTMLStencilElement, JSXBase } from '@stencil/core/internal';
 import {
-  InputData,
+  InputFile,
   OutputData,
 } from './components/stencil-repl/stencil-repl';
 import {
-  InputData as InputData1,
+  InputFile as InputFile1,
 } from './components/stencil-repl/stencil-repl';
 
 export namespace Components {
@@ -28,7 +28,7 @@ export namespace Components {
     'name': string;
   }
   interface ReplInputs {
-    'inputs': InputData[];
+    'inputs': InputFile[];
     'selectedName': string;
   }
   interface ReplOutputs {
@@ -37,7 +37,7 @@ export namespace Components {
   interface ReplViewport {}
   interface StencilRepl {
     'appName': string;
-    'inputs': InputData[];
+    'inputs': InputFile[];
   }
 }
 
@@ -111,7 +111,7 @@ declare namespace LocalJSX {
     'onInputSelect'?: (event: CustomEvent<string>) => void;
   }
   interface ReplInputs extends JSXBase.HTMLAttributes<HTMLReplInputsElement> {
-    'inputs'?: InputData[];
+    'inputs'?: InputFile[];
     'selectedName'?: string;
   }
   interface ReplOutputs extends JSXBase.HTMLAttributes<HTMLReplOutputsElement> {
@@ -120,7 +120,7 @@ declare namespace LocalJSX {
   interface ReplViewport extends JSXBase.HTMLAttributes<HTMLReplViewportElement> {}
   interface StencilRepl extends JSXBase.HTMLAttributes<HTMLStencilReplElement> {
     'appName'?: string;
-    'inputs'?: InputData[];
+    'inputs'?: InputFile[];
   }
 
   interface IntrinsicElements {

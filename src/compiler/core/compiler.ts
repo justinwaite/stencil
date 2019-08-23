@@ -1,8 +1,9 @@
 import * as d from '../../declarations';
 import { build } from './build';
+import { buildError } from '@utils';
 import { createCompilerContext } from './context';
 import { validateConfig } from '../config/validate-config';
-import { buildError } from '@utils';
+import { watch } from './watch';
 
 
 export const createCompiler = async (config: d.Config) => {
@@ -23,10 +24,8 @@ export const createCompiler = async (config: d.Config) => {
   const compiler: d.CompilerCore = {
     build: () => build(config, compilerCtx),
     config,
-    destroy: async () => {
-      //
-    },
-    sys: config.sys as any
+    sys: config.sys as any,
+    watch: () => watch(config, compilerCtx)
   };
 
   return compiler;

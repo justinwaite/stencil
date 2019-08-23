@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop, Listen } from '@stencil/core';
-import { InputData } from '../stencil-repl/stencil-repl';
+import { InputFile } from '../stencil-repl/stencil-repl';
 
 @Component({
   tag: 'repl-inputs',
@@ -8,7 +8,7 @@ import { InputData } from '../stencil-repl/stencil-repl';
 })
 export class ReplInputs {
 
-  @Prop() inputs: InputData[] = [];
+  @Prop() inputs: InputFile[] = [];
   @Prop() selectedName: string;
 
   @Listen('inputSelect')
