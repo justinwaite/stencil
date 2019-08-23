@@ -15,6 +15,7 @@ section {
   height: calc(100% - 40px);
 }
 
-pre {
-  height: 100%;
+.add-input {
+  cursor: pointer;
+
 }

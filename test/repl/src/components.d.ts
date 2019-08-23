@@ -20,10 +20,16 @@ export namespace Components {
   }
   interface ReplInput {
     'code': string;
+    'isSelected': boolean;
+    'name': string;
+  }
+  interface ReplInputSelection {
+    'isSelected': boolean;
     'name': string;
   }
   interface ReplInputs {
     'inputs': InputData[];
+    'selectedName': string;
   }
   interface ReplOutputs {
     'output': OutputData;
@@ -48,6 +54,12 @@ declare global {
   var HTMLReplInputElement: {
     prototype: HTMLReplInputElement;
     new (): HTMLReplInputElement;
+  };
+
+  interface HTMLReplInputSelectionElement extends Components.ReplInputSelection, HTMLStencilElement {}
+  var HTMLReplInputSelectionElement: {
+    prototype: HTMLReplInputSelectionElement;
+    new (): HTMLReplInputSelectionElement;
   };
 
   interface HTMLReplInputsElement extends Components.ReplInputs, HTMLStencilElement {}
@@ -76,6 +88,7 @@ declare global {
   interface HTMLElementTagNameMap {
     'repl-header': HTMLReplHeaderElement;
     'repl-input': HTMLReplInputElement;
+    'repl-input-selection': HTMLReplInputSelectionElement;
     'repl-inputs': HTMLReplInputsElement;
     'repl-outputs': HTMLReplOutputsElement;
     'repl-viewport': HTMLReplViewportElement;
@@ -89,10 +102,17 @@ declare namespace LocalJSX {
   }
   interface ReplInput extends JSXBase.HTMLAttributes<HTMLReplInputElement> {
     'code'?: string;
+    'isSelected'?: boolean;
     'name'?: string;
+  }
+  interface ReplInputSelection extends JSXBase.HTMLAttributes<HTMLReplInputSelectionElement> {
+    'isSelected'?: boolean;
+    'name'?: string;
+    'onInputSelect'?: (event: CustomEvent<string>) => void;
   }
   interface ReplInputs extends JSXBase.HTMLAttributes<HTMLReplInputsElement> {
     'inputs'?: InputData[];
+    'selectedName'?: string;
   }
   interface ReplOutputs extends JSXBase.HTMLAttributes<HTMLReplOutputsElement> {
     'output'?: OutputData;
@@ -106,6 +126,7 @@ declare namespace LocalJSX {
   interface IntrinsicElements {
     'repl-header': ReplHeader;
     'repl-input': ReplInput;
+    'repl-input-selection': ReplInputSelection;
     'repl-inputs': ReplInputs;
     'repl-outputs': ReplOutputs;
     'repl-viewport': ReplViewport;

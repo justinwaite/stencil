@@ -10,13 +10,18 @@ export class ReplInput {
 
   @Prop() name: string;
   @Prop() code: string
+  @Prop() isSelected = false;
 
   render() {
     return (
-      <Host>
-        <pre>
+      <Host
+        class={{
+          selected: this.isSelected
+        }}
+      >
+        <textarea>
           {this.code}
-        </pre>
+        </textarea>
       </Host>
     );
   }

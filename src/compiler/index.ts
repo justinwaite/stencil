@@ -9,3 +9,5 @@ export { formatComponentRuntimeMeta, formatLazyBundleRuntimeMeta } from './app-c
 export { getBuildFeatures } from './app-core/build-conditionals';
 export { transpileModule } from './transpile/transpile-module';
 export { validateConfig } from './config/validate-config';
+
+export { createCompiler as experimentalCreateCompiler } from './core/create-compiler';

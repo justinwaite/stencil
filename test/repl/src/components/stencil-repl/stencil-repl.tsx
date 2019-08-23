@@ -1,5 +1,5 @@
 import { Component, Host, h, Prop, State } from '@stencil/core';
-import { compile } from '../../compile';
+import { createCompiler, Compiler, CompilerConfig } from '../../compiler';
 
 
 @Component({
@@ -14,9 +14,23 @@ export class StencilRepl {
 
   @State() output: OutputData;
 
+  compiler: Compiler;
+
+  async componentWillLoad() {
+    const config: CompilerConfig = {
+
+    };
+
+    this.compiler = await createCompiler(config);
+
+    await Promise.all(this.inputs.map(async input => {
+      await this.compiler.sys.writeFile(input.name, input.code);
+    }));
+  }
+
   async compile() {
-    const results = await compile(this.inputs);
-    results;
+    const results = await this.compiler.build();
+    console.log('results', results);
   }
 
   componentDidLoad() {

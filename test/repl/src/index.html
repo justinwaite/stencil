@@ -27,14 +27,24 @@
     const repl = document.querySelector('stencil-repl');
     repl.appName = 'Hello Stencil';
     repl.inputs = [
-        {
-          name: 'hello-world.tsx',
-          code: `
-export class HelloWorld {
-
-}
+{
+name: `hello-world.tsx`,
+code:
 `
-        }
+import { getText } from './util';
+export class HelloWorld {
+  render() {
+    return getText();
+  }
+}`
+},
+{
+name: `util.ts`,
+code: `
+export const getText = () => {
+  return 'Hello World';
+};`
+}
     ];
   </script>
 </body>

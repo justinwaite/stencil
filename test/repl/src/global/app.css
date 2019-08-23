@@ -1,11 +1,10 @@
 
 :root {
   --site-header-height: 30px;
-}
-
-
-:root {
   --repl-header-height: 40px;
+  --stencil-purple: #5851ff;
+
+  --font-code: 'Courier New', Courier, monospace;
 }
 
 
@@ -25,7 +24,7 @@ header {
   height: var(--header-height);
   padding: 5px;
   font-weight: bold;
-  background: #5851ff;
+  background: var(--stencil-purple);
   color: white;
 }
 
